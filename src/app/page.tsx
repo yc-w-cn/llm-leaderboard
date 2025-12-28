@@ -219,7 +219,7 @@ export default function ModelCompare() {
               </div>
 
               <div className="space-y-3 flex-1 overflow-y-auto max-h-[500px]">
-                {filteredModels.slice(0, 20).map((model) => (
+                {filteredModels.map((model) => (
                   <div
                     key={model.model_id}
                     className="flex items-center justify-between p-4 border border-zinc-300 hover:border-black transition-colors"
