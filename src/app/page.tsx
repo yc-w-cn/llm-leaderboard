@@ -72,6 +72,10 @@ export default function ModelCompare() {
     setCompareList(compareList.filter((m) => m.model_id !== modelId));
   };
 
+  const clearCompareList = () => {
+    setCompareList([]);
+  };
+
   const filteredModels = models.filter(
     (m) => !compareList.find((c) => c.model_id === m.model_id),
   );
@@ -156,7 +160,17 @@ export default function ModelCompare() {
             </div>
 
             <div className="border-t-2 border-black pt-6 flex flex-col">
-              <h2 className="text-2xl font-semibold mb-6">对比列表</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold">对比列表</h2>
+                {compareList.length > 0 && (
+                  <button
+                    onClick={clearCompareList}
+                    className="text-sm px-4 py-2 border border-zinc-300 hover:border-black hover:bg-zinc-50 transition-all"
+                  >
+                    清空
+                  </button>
+                )}
+              </div>
 
               {compareList.length === 0 ? (
                 <div className="p-12 border-2 border-dashed border-zinc-300 text-center flex-1 flex items-center justify-center">
