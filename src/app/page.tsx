@@ -252,6 +252,20 @@ export default function ModelCompare() {
             )}
           </div>
         </div>
+
+        <footer className="mt-16 pt-8 border-t border-zinc-200">
+          <p className="text-sm text-zinc-500 text-center">
+            数据来源：
+            <a
+              href="https://api.zeroeval.com/leaderboard/models/full"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-700 hover:text-black underline ml-1"
+            >
+              https://api.zeroeval.com/leaderboard/models/full
+            </a>
+          </p>
+        </footer>
       </div>
     </div>
   );
