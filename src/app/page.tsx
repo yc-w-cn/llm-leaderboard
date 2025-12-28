@@ -632,6 +632,14 @@ export default function ModelCompare() {
               https://api.zeroeval.com/leaderboard/models/full
             </a>
           </p>
+          <p className="text-xs text-zinc-400 text-center mt-2">
+            版本 {process.env.NEXT_PUBLIC_APP_VERSION} · 编译于{' '}
+            {process.env.NEXT_PUBLIC_BUILD_DATE
+              ? new Date(process.env.NEXT_PUBLIC_BUILD_DATE).toLocaleString(
+                  'zh-CN',
+                )
+              : ''}
+          </p>
         </footer>
       </div>
     </div>
