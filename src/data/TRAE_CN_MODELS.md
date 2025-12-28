@@ -1,0 +1,9 @@
+Doubao-Seed-1.8
+Doubao-Seed-Code
+GLM-4.7
+GLM-4.6
+MiniMax-M2.1
+MiniMax-M2
+DeepSeek-V3.1-Terminus
+Kimi-K2-0905
+Qwen-3-Coder
