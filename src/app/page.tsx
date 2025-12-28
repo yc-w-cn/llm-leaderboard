@@ -2,14 +2,49 @@
 
 import { useMemo, useState } from 'react';
 
-import { ChevronRight, Plus, Search, X } from 'lucide-react';
+import { ChevronRight, Info, Plus, Search, X } from 'lucide-react';
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import modelsData from '@/data/full.json';
 import type { Model } from '@/types/model';
 
 export default function ModelCompare() {
   const [searchTerm, setSearchTerm] = useState('');
   const [compareList, setCompareList] = useState<Model[]>([]);
+  const [infoDialog, setInfoDialog] = useState<{
+    open: boolean;
+    type: 'gpqa' | 'swe_bench' | 'mmmu' | null;
+  }>({ open: false, type: null });
+
+  const scoreDescriptions = {
+    gpqa: {
+      title: 'GPQA 分数',
+      description:
+        'GPQA (Graduate-Level Google-Proof Q&A) 是一个研究生级别的问答基准测试，涵盖物理、生物学和化学等领域。该测试旨在评估模型在处理复杂、专业领域问题时的推理能力。分数越高表示模型在专业领域的知识储备和推理能力越强。',
+    },
+    swe_bench: {
+      title: 'SWE Bench 分数',
+      description:
+        'SWE Bench (Software Engineering Benchmark) 是一个软件工程基准测试，基于真实的 GitHub 问题。该测试评估模型在实际软件工程任务中的表现，包括代码理解、调试和修复能力。分数越高表示模型在软件工程任务中的实际应用能力越强。',
+    },
+    mmmu: {
+      title: 'MMMU 分数',
+      description:
+        'MMMU (Massive Multi-discipline Multimodal Understanding) 是一个大规模多学科多模态理解基准测试，涵盖人文、社会科学、自然科学、工程和医学等学科。该测试评估模型在跨学科知识理解和多模态推理方面的综合能力。分数越高表示模型的知识广度和综合理解能力越强。',
+    },
+  };
 
   const models = useMemo(() => {
     const keywords = searchTerm.trim().split(/\s+/).filter(Boolean);
@@ -157,12 +192,66 @@ export default function ModelCompare() {
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
                         GPQA 分数
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                onClick={() => {
+                                  setInfoDialog({ open: true, type: 'gpqa' });
+                                }}
+                                className="ml-1 inline-flex items-center hover:text-zinc-600"
+                              >
+                                <Info className="w-4 h-4" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>点击查看详情</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
                         SWE Bench 分数
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                onClick={() => {
+                                  setInfoDialog({
+                                    open: true,
+                                    type: 'swe_bench',
+                                  });
+                                }}
+                                className="ml-1 inline-flex items-center hover:text-zinc-600"
+                              >
+                                <Info className="w-4 h-4" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>点击查看详情</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
                         MMMU 分数
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                onClick={() => {
+                                  setInfoDialog({ open: true, type: 'mmmu' });
+                                }}
+                                className="ml-1 inline-flex items-center hover:text-zinc-600"
+                              >
+                                <Info className="w-4 h-4" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>点击查看详情</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
                         发布日期
@@ -227,6 +316,25 @@ export default function ModelCompare() {
             </div>
           )}
         </div>
+
+        <Dialog
+          open={infoDialog.open}
+          onOpenChange={(open) => {
+            setInfoDialog({ open, type: open ? infoDialog.type : null });
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {infoDialog.type && scoreDescriptions[infoDialog.type].title}
+              </DialogTitle>
+              <DialogDescription>
+                {infoDialog.type &&
+                  scoreDescriptions[infoDialog.type].description}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
 
         <footer className="mt-16 pt-8 border-t border-zinc-200">
           <p className="text-sm text-zinc-500 text-center">
