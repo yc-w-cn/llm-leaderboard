@@ -64,7 +64,6 @@ export default function ModelCompare() {
 
   const addToCompare = (model: Model) => {
     if (compareList.find((m) => m.model_id === model.model_id)) return;
-    if (compareList.length >= 5) return;
     setCompareList([...compareList, model]);
   };
 
