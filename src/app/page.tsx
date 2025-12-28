@@ -143,103 +143,89 @@ export default function ModelCompare() {
                   <thead>
                     <tr className="border-b-2 border-black">
                       <th className="text-left py-3 px-2 font-semibold">
-                        指标
+                        模型
                       </th>
-                      {compareList.map((model) => (
-                        <th
-                          key={model.model_id}
-                          className="text-left py-3 px-2 font-semibold"
-                        >
-                          {model.name}
-                        </th>
-                      ))}
+                      <th className="text-left py-3 px-2 font-semibold">
+                        组织
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        上下文长度
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        多模态
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        输入价格
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        输出价格
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        GPQA 分数
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        SWE Bench 分数
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        MMMU 分数
+                      </th>
+                      <th className="text-left py-3 px-2 font-semibold">
+                        发布日期
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-zinc-200">
-                      <td className="py-3 px-2 font-medium">组织</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                    {compareList.map((model, index) => (
+                      <tr
+                        key={model.model_id}
+                        className={`border-b border-zinc-200 ${
+                          index % 2 === 0 ? 'bg-zinc-50' : ''
+                        }`}
+                      >
+                        <td className="py-3 px-2 font-semibold">
+                          {model.name}
+                        </td>
+                        <td className="py-3 px-2">
                           {model.organization || '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200 bg-zinc-50">
-                      <td className="py-3 px-2 font-medium">上下文长度</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.context ? model.context.toLocaleString() : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200">
-                      <td className="py-3 px-2 font-medium">多模态</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.multimodal ? '是' : '否'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200 bg-zinc-50">
-                      <td className="py-3 px-2 font-medium">输入价格</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.input_price
                             ? `$${parseFloat(model.input_price).toFixed(2)}`
                             : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200">
-                      <td className="py-3 px-2 font-medium">输出价格</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.output_price
                             ? `$${parseFloat(model.output_price).toFixed(2)}`
                             : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200 bg-zinc-50">
-                      <td className="py-3 px-2 font-medium">GPQA 分数</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.gpqa_score
                             ? (model.gpqa_score * 100).toFixed(1) + '%'
                             : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200">
-                      <td className="py-3 px-2 font-medium">SWE Bench 分数</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.swe_bench_verified_score
                             ? (model.swe_bench_verified_score * 100).toFixed(
                                 1,
                               ) + '%'
                             : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200 bg-zinc-50">
-                      <td className="py-3 px-2 font-medium">MMMU 分数</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.mmmu_score
                             ? (model.mmmu_score * 100).toFixed(1) + '%'
                             : '-'}
                         </td>
-                      ))}
-                    </tr>
-                    <tr className="border-b border-zinc-200">
-                      <td className="py-3 px-2 font-medium">发布日期</td>
-                      {compareList.map((model) => (
-                        <td key={model.model_id} className="py-3 px-2">
+                        <td className="py-3 px-2">
                           {model.release_date || '-'}
                         </td>
-                      ))}
-                    </tr>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
