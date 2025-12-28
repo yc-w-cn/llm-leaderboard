@@ -12,11 +12,18 @@ export default function ModelCompare() {
   const [compareList, setCompareList] = useState<Model[]>([]);
 
   const models = useMemo(() => {
-    return modelsData.filter(
-      (model) =>
-        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.organization.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const keywords = searchTerm.trim().split(/\s+/).filter(Boolean);
+    if (keywords.length === 0) return modelsData;
+
+    return modelsData.filter((model) => {
+      const nameLower = model.name.toLowerCase();
+      const orgLower = model.organization.toLowerCase();
+      return keywords.every(
+        (keyword) =>
+          nameLower.includes(keyword.toLowerCase()) ||
+          orgLower.includes(keyword.toLowerCase()),
+      );
+    });
   }, [searchTerm]);
 
   const addToCompare = (model: Model) => {
