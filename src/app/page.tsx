@@ -191,67 +191,73 @@ export default function ModelCompare() {
                         输出价格
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
-                        GPQA 分数
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => {
-                                  setInfoDialog({ open: true, type: 'gpqa' });
-                                }}
-                                className="ml-1 inline-flex items-center hover:text-zinc-600"
-                              >
-                                <Info className="w-4 h-4" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>点击查看详情</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <span className="inline-flex items-center">
+                          GPQA 分数
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => {
+                                    setInfoDialog({ open: true, type: 'gpqa' });
+                                  }}
+                                  className="ml-1 inline-flex items-center hover:text-zinc-600"
+                                >
+                                  <Info className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>点击查看详情</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </span>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
-                        SWE Bench 分数
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => {
-                                  setInfoDialog({
-                                    open: true,
-                                    type: 'swe_bench',
-                                  });
-                                }}
-                                className="ml-1 inline-flex items-center hover:text-zinc-600"
-                              >
-                                <Info className="w-4 h-4" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>点击查看详情</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <span className="inline-flex items-center">
+                          SWE Bench 分数
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => {
+                                    setInfoDialog({
+                                      open: true,
+                                      type: 'swe_bench',
+                                    });
+                                  }}
+                                  className="ml-1 inline-flex items-center hover:text-zinc-600"
+                                >
+                                  <Info className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>点击查看详情</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </span>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
-                        MMMU 分数
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => {
-                                  setInfoDialog({ open: true, type: 'mmmu' });
-                                }}
-                                className="ml-1 inline-flex items-center hover:text-zinc-600"
-                              >
-                                <Info className="w-4 h-4" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>点击查看详情</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <span className="inline-flex items-center">
+                          MMMU 分数
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => {
+                                    setInfoDialog({ open: true, type: 'mmmu' });
+                                  }}
+                                  className="ml-1 inline-flex items-center hover:text-zinc-600"
+                                >
+                                  <Info className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>点击查看详情</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </span>
                       </th>
                       <th className="text-left py-3 px-2 font-semibold">
                         发布日期
