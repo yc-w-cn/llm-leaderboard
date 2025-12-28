@@ -2,7 +2,15 @@
 
 import { useMemo, useState } from 'react';
 
-import { ChevronRight, Info, Plus, Search, X } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  Info,
+  Plus,
+  Search,
+  X,
+} from 'lucide-react';
 
 import {
   Dialog,
@@ -24,6 +32,10 @@ import type { Model } from '@/types/model';
 export default function ModelCompare() {
   const [searchTerm, setSearchTerm] = useState('');
   const [compareList, setCompareList] = useState<Model[]>([]);
+  const [sortColumn, setSortColumn] = useState<string>('mmmu_score');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(
+    'desc',
+  );
   const [infoDialog, setInfoDialog] = useState<{
     open: boolean;
     type: 'gpqa' | 'swe_bench' | 'mmmu' | null;
@@ -78,6 +90,80 @@ export default function ModelCompare() {
   const filteredModels = models.filter(
     (m) => !compareList.find((c) => c.model_id === m.model_id),
   );
+
+  const sortedCompareList = useMemo(() => {
+    if (!sortColumn || !sortDirection) return compareList;
+
+    return [...compareList].sort((a, b) => {
+      let valueA: any;
+      let valueB: any;
+
+      switch (sortColumn) {
+        case 'name':
+          valueA = a.name.toLowerCase();
+          valueB = b.name.toLowerCase();
+          break;
+        case 'organization':
+          valueA = (a.organization || '').toLowerCase();
+          valueB = (b.organization || '').toLowerCase();
+          break;
+        case 'context':
+          valueA = a.context || 0;
+          valueB = b.context || 0;
+          break;
+        case 'multimodal':
+          valueA = a.multimodal ? 1 : 0;
+          valueB = b.multimodal ? 1 : 0;
+          break;
+        case 'input_price':
+          valueA = a.input_price ? parseFloat(a.input_price) : 0;
+          valueB = b.input_price ? parseFloat(b.input_price) : 0;
+          break;
+        case 'output_price':
+          valueA = a.output_price ? parseFloat(a.output_price) : 0;
+          valueB = b.output_price ? parseFloat(b.output_price) : 0;
+          break;
+        case 'gpqa_score':
+          valueA = a.gpqa_score || 0;
+          valueB = b.gpqa_score || 0;
+          break;
+        case 'swe_bench_verified_score':
+          valueA = a.swe_bench_verified_score || 0;
+          valueB = b.swe_bench_verified_score || 0;
+          break;
+        case 'mmmu_score':
+          valueA = a.mmmu_score || 0;
+          valueB = b.mmmu_score || 0;
+          break;
+        case 'release_date':
+          valueA = a.release_date || '';
+          valueB = b.release_date || '';
+          break;
+        default:
+          return 0;
+      }
+
+      if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [compareList, sortColumn, sortDirection]);
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else if (sortDirection === 'desc') {
+        setSortDirection(null);
+        setSortColumn('');
+      } else {
+        setSortDirection('asc');
+      }
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
@@ -209,32 +295,134 @@ export default function ModelCompare() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b-2 border-black">
-                      <th className="text-left py-3 px-2 font-semibold">
-                        模型
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('name');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          模型
+                          {sortColumn === 'name' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        组织
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('organization');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          组织
+                          {sortColumn === 'organization' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        上下文长度
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('context');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          上下文长度
+                          {sortColumn === 'context' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        多模态
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('multimodal');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          多模态
+                          {sortColumn === 'multimodal' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        输入价格
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('input_price');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          输入价格
+                          {sortColumn === 'input_price' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        输出价格
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('output_price');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          输出价格
+                          {sortColumn === 'output_price' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('gpqa_score');
+                        }}
+                      >
                         <span className="inline-flex items-center">
                           GPQA 分数
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <button
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     setInfoDialog({ open: true, type: 'gpqa' });
                                   }}
                                   className="ml-1 inline-flex items-center hover:text-zinc-600"
@@ -247,16 +435,31 @@ export default function ModelCompare() {
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
+                          {sortColumn === 'gpqa_score' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
                         </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('swe_bench_verified_score');
+                        }}
+                      >
                         <span className="inline-flex items-center">
                           SWE Bench 分数
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <button
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     setInfoDialog({
                                       open: true,
                                       type: 'swe_bench',
@@ -272,16 +475,31 @@ export default function ModelCompare() {
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
+                          {sortColumn === 'swe_bench_verified_score' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
                         </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('mmmu_score');
+                        }}
+                      >
                         <span className="inline-flex items-center">
                           MMMU 分数
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <button
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     setInfoDialog({ open: true, type: 'mmmu' });
                                   }}
                                   className="ml-1 inline-flex items-center hover:text-zinc-600"
@@ -294,15 +512,40 @@ export default function ModelCompare() {
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
+                          {sortColumn === 'mmmu_score' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
                         </span>
                       </th>
-                      <th className="text-left py-3 px-2 font-semibold">
-                        发布日期
+                      <th
+                        className="text-left py-3 px-2 font-semibold cursor-pointer hover:bg-zinc-100 select-none"
+                        onClick={() => {
+                          handleSort('release_date');
+                        }}
+                      >
+                        <span className="inline-flex items-center">
+                          发布日期
+                          {sortColumn === 'release_date' && (
+                            <span className="ml-1">
+                              {sortDirection === 'asc' ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </span>
+                          )}
+                        </span>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {compareList.map((model, index) => (
+                    {sortedCompareList.map((model, index) => (
                       <tr
                         key={model.model_id}
                         className={`border-b border-zinc-200 ${
