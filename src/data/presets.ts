@@ -43,6 +43,22 @@ export const MODEL_PRESETS: ModelPreset[] = [
       // GPT-5-high - 数据源中不存在
     ],
   },
+  {
+    id: 'alpha-xiv',
+    name: 'ALPHA XIV 模型组',
+    description: '包含 ALPHA XIV 选择的模型',
+    models: [
+      'Gemini 3 Flash',
+      'Gemini 3 Pro',
+      'Claude Sonnet 4.5',
+      'GPT-5',
+      'GPT OSS 120B', // GPT OSS
+      'Llama 4 Maverick',
+      'Qwen3 235B A22B', // Qwen 3
+      'Qwen3-Next-80B-A3B-Base', // Qwen 3 Next
+      'Kimi K2 Base', // Kimi K2
+    ],
+  },
 ];
 
 export function applyPreset(allModels: Model[], presetId: string): Model[] {
